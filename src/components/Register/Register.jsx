@@ -14,10 +14,13 @@ function Register() {
     passwordError: false,
   });
 
+  const [success, setSuccess] = useState(false);
+
   const handleRegister = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
+    setSuccess(false);
 
     var validEmailRegex =
       /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
@@ -61,17 +64,32 @@ function Register() {
     createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
         console.log(result.user);
-        sendEmailVerification(auth.currentUser).then((verificationResult) =>
-          console.log(verificationResult)
-        );
+        sendEmailVerification(auth.currentUser).then((verificationResult) => {
+          console.log(verificationResult);
+          setSuccess(true);
+        });
+        e.target.reset();
       })
-      .catch((error) => console.error(error));
+      .catch((firebaseError) => {
+        if (
+          firebaseError ===
+          "FirebaseError: Firebase: Error (auth/email-already-in-use."
+        ) {
+          setError({
+            ...error,
+            emailError: "Email already exist",
+          });
+        }
+
+        // document.getElementById("error").innerText = error;
+      });
 
     console.log(error);
   };
 
   return (
     <div className="login-register-container register-component">
+      <div id="error"></div>
       <Form onSubmit={handleRegister}>
         <h3 className="text-center mb-3">Register</h3>
         <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -102,6 +120,12 @@ function Register() {
           <Button variant="primary" type="submit">
             Register Now
           </Button>
+
+          {success && (
+            <p className="text-success mt-3 mb-0">
+              Your registeration is complete. Please verify your mail.
+            </p>
+          )}
         </div>
       </Form>
       <p className="m-0 mt-2 small">

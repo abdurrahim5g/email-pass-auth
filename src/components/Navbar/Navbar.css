@@ -17,5 +17,16 @@ nav.navbar-componene {
     padding: 0;
     margin: 0;
     display: flex;
-    gap: 20px;
+    gap: 10px;
 }
+
+.menu-area a {
+    padding: 7px 13px;
+}
+
+.menu-area a.active {
+    background: #646cff;
+    border-radius: 5px;
+    color: #fff;
+}
+
