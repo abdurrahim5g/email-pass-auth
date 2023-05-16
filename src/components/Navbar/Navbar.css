@@ -1,0 +1,21 @@
+nav.navbar-componene {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    min-width: 400px;
+}
+
+.logo-area a {
+    display: block;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.menu-area ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 20px;
+}
